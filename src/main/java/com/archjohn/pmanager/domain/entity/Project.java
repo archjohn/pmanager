@@ -1,94 +1,41 @@
 package com.archjohn.pmanager.domain.entity;
 
 import com.archjohn.pmanager.domain.model.ProjectStatus;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
+@Entity
+@Table(name = "project")
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Project {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false, length = 36)
     private String id;
+
+    @Column(name = "name", nullable = false, length = 80)
     private String name;
+
+    @Column(name = "description", nullable = false, length = 150)
     private String description;
+
+    @Column(name = "initial_date", nullable = false)
     private LocalDate initialDate;
+
+    @Column(name = "final_date", nullable = false)
     private LocalDate finalDate;
+
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private ProjectStatus status;
 
-    public Project(
-            String id,
-            String name,
-            String description,
-            LocalDate initialDate,
-            LocalDate finalDate,
-            ProjectStatus status
-    ) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.initialDate = initialDate;
-        this.finalDate = finalDate;
-        this.status = status;
-    }
-
-    public Project() {}
-
-    private String getId() {
-        return id;
-    }
-
-    private void setId(String id) {
-        this.id = id;
-    }
-
-    private String getName() {
-        return name;
-    }
-
-    private void setName(String name) {
-        this.name = name;
-    }
-
-    private String getDescription() {
-        return description;
-    }
-
-    private void setDescription(String description) {
-        this.description = description;
-    }
-
-    private LocalDate getInitialDate() {
-        return initialDate;
-    }
-
-    private void setInitialDate(LocalDate initialDate) {
-        this.initialDate = initialDate;
-    }
-
-    private LocalDate getFinalDate() {
-        return finalDate;
-    }
-
-    private void setFinalDate(LocalDate finalDate) {
-        this.finalDate = finalDate;
-    }
-
-    private ProjectStatus getStatus() {
-        return status;
-    }
-
-    private void setProjectStatus(ProjectStatus status) {
-        this.status = status;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Project project = (Project) o;
-        return Objects.equals(getId(), project.getId()) && Objects.equals(getName(), project.getName()) && Objects.equals(getDescription(), project.getDescription()) && Objects.equals(getInitialDate(), project.getInitialDate()) && Objects.equals(getFinalDate(), project.getFinalDate()) && getStatus() == project.getStatus();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName(), getDescription(), getInitialDate(), getFinalDate(), getStatus());
-    }
 }

@@ -1,6 +1,7 @@
 package com.archjohn.pmanager.domain.infrastructure.exception;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,6 +13,11 @@ import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(value = RequestException.class)
+    public ResponseEntity<Object> handleRequestException(RequestException exception, WebRequest request) {
+        return handleException(exception, exception.getErrorCode(), exception.getMessage(), BAD_REQUEST, request);
+    }
 
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<Object> handleGenericException(Exception exception, WebRequest request) {
@@ -28,6 +34,29 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
                         .build(),
                 new HttpHeaders(),
                 BAD_REQUEST,
+                request
+        );
+    }
+    private ResponseEntity<Object> handleException(
+            Exception exception,
+            String errorCode,
+            String message,
+            HttpStatus status,
+            WebRequest request
+            ) {
+        ServletWebRequest servletWebRequest = (ServletWebRequest) request;
+
+        return handleExceptionInternal(
+                exception,
+                RestError
+                        .builder()
+                        .errorCode(errorCode)
+                        .errorMessage(message)
+                        .statusCode(status.value())
+                        .path(servletWebRequest.getRequest().getRequestURI())
+                        .build(),
+                new HttpHeaders(),
+                status,
                 request
         );
     }

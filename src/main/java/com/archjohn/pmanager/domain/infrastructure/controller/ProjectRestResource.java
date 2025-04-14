@@ -5,6 +5,8 @@ import com.archjohn.pmanager.domain.infrastructure.dto.ProjectDTO;
 import com.archjohn.pmanager.domain.infrastructure.dto.SaveProjectDataDTO;
 import com.archjohn.pmanager.domain.service.ProjectService;
 import static com.archjohn.pmanager.domain.infrastructure.controller.RestConstants.*;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +25,7 @@ public class ProjectRestResource {
     private final ProjectService projectService;
 
     @PostMapping
-    public ResponseEntity<ProjectDTO> createProject(@RequestBody SaveProjectDataDTO saveProjectDataDTO) {
+    public ResponseEntity<ProjectDTO> createProject(@RequestBody @Valid   SaveProjectDataDTO saveProjectDataDTO) {
         Project project = projectService.createProject(saveProjectDataDTO);
 
         return ResponseEntity

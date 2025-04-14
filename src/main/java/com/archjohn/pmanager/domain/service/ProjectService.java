@@ -6,16 +6,18 @@ import com.archjohn.pmanager.domain.model.ProjectStatus;
 import com.archjohn.pmanager.repository.ProjectRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProjectService {
-
     private final ProjectRepository projectRepository;
 
     @Transactional
     public Project createProject(SaveProjectDataDTO saveProjectData) {
+
         Project project = Project
                 .builder()
                 .name(saveProjectData.getName())

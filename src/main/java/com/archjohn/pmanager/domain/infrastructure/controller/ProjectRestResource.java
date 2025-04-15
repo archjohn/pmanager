@@ -43,5 +43,14 @@ public class ProjectRestResource {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ProjectDTO> updateProject(
+            @PathVariable("id") String projectID,
+            @RequestBody @Valid SaveProjectDataDTO saveProjectData
+    ) {
+        Project project = projectService.updateProject(projectID, saveProjectData);
+        return ResponseEntity.ok(ProjectDTO.create(project));
+    }
+
 
 }

@@ -47,6 +47,19 @@ public class ProjectService {
         projectRepository.delete(project);
     }
 
+    @Transactional
+    public Project updateProject(String projectId, SaveProjectDataDTO saveProjectDataDTO) {
+        Project project = loadProject(projectId);
+
+        project.setName(saveProjectDataDTO.getName());
+        project.setDescription(saveProjectDataDTO.getDescription());
+        project.setInitialDate(saveProjectDataDTO.getInitialDate());
+        project.setFinalDate(saveProjectDataDTO.getFinalDate());
+        project.setStatus(saveProjectDataDTO.getStatus());
+
+        return project;
+    }
+
 
 }
 

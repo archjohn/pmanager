@@ -1,6 +1,7 @@
 package com.archjohn.pmanager.domain.service;
 
 import com.archjohn.pmanager.domain.entity.Project;
+import com.archjohn.pmanager.domain.exeception.ProjectNotFoundException;
 import com.archjohn.pmanager.domain.infrastructure.dto.SaveProjectDataDTO;
 import com.archjohn.pmanager.domain.model.ProjectStatus;
 import com.archjohn.pmanager.repository.ProjectRepository;
@@ -8,6 +9,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +35,11 @@ public class ProjectService {
         return project;
     }
 
+    public Project loadProject(String projectID) {
+        return projectRepository
+                .findById(projectID)
+                .orElseThrow(() -> new ProjectNotFoundException(projectID));
+    }
 }
 
 

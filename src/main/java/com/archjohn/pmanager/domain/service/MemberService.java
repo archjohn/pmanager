@@ -4,6 +4,7 @@ import com.archjohn.pmanager.domain.entity.Member;
 import com.archjohn.pmanager.domain.exeception.MemberNotFoundException;
 import com.archjohn.pmanager.domain.infrastructure.dto.SaveMemberDataDTO;
 import com.archjohn.pmanager.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
+    @Transactional
     public Member createMember(SaveMemberDataDTO saveMemberData) {
         Member member = Member
                 .builder()
@@ -34,4 +36,23 @@ public class MemberService {
                 .findByIdAndDeleted(memberId, false)
                 .orElseThrow(() -> new MemberNotFoundException(memberId));
     }
+
+    @Transactional
+    public void deleteMember(String memberId) {
+        Member member = loadMemberById(memberId);
+        member.setDeleted(true);
+    }
+
+
+    @Transactional
+    public Member updateMember(String memberId, SaveMemberDataDTO saveMemberData){
+        Member member = loadMemberById(memberId);
+
+        member.setName(saveMemberData.getName());
+        member.setEmail(saveMemberData.getEmail());
+
+        return member;
+    }
+
+
 }

@@ -10,10 +10,7 @@ import com.archjohn.pmanager.domain.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -34,5 +31,12 @@ public class MemberRestResource {
                 .created(URI.create(PATH_MEMBERS + "/" + member.getId()))
                 .body(MemberDTO.create(member));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MemberDTO> loadMemberById(@PathVariable("id") String memberId) {
+        Member member = memberService.loadMemberById(memberId);
+        return ResponseEntity.ok(MemberDTO.create(member));
+    }
+
 
 }

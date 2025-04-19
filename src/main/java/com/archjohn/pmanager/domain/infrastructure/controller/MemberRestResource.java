@@ -8,9 +8,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.net.URI;
-
+import java.util.List;
 import static com.archjohn.pmanager.domain.infrastructure.controller.RestConstants.*;
 
 @RestController
@@ -50,6 +49,15 @@ public class MemberRestResource {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping
+    public ResponseEntity<List<MemberDTO>> findAllMembers(
+            @RequestParam(value = "email", required = false) String email
+    ) {
+        List<Member> members = memberService.findAllMembers(email);
 
+        return ResponseEntity.ok(
+                members.stream().map(MemberDTO::create).toList()
+        );
+    }
 
 }

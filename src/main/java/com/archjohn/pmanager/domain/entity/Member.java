@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 import static jakarta.persistence.GenerationType.*;
 
 @Entity
@@ -28,5 +30,9 @@ public class Member {
     private String email;
     @Column(name = "deleted", nullable = false)
     private Boolean deleted;
+
+
+    @ManyToMany(mappedBy = "members")
+    private List<Member> members;
 
 }

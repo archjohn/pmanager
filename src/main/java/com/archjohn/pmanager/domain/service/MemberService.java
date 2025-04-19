@@ -8,9 +8,11 @@ import com.archjohn.pmanager.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+
+import static jdk.dynalink.linker.support.Guards.isNull;
 
 @Service
 @RequiredArgsConstructor
@@ -69,6 +71,21 @@ public class MemberService {
                 .findByIdAndDeleted(email, false)
                 .filter(m -> !Objects.equals(m.getId(), idToExclude))
                 .isPresent();
+    }
+
+    public List<Member> findAllMembers(String email) {
+        List<Member> members;
+
+        if(Objects.isNull(email)) {
+            members= memberRepository.findAllNotDeleted();
+        } else {
+            members = memberRepository
+                    .findByEmailAndDeleted(email, false)
+                    .map(List::of)
+                    .orElse(List.of());
+        }
+
+        return members;
     }
 
 
